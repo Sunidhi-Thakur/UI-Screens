@@ -12,13 +12,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Screens">
-        <activity android:name=".Dashboard"></activity>
-        <activity android:name=".Congratulations" />
-        <activity android:name=".Verification" />
-        <activity android:name=".Registration" />
-        <activity android:name=".SelectLanguage" />
+        <activity android:name=".Dashboard"
+            android:noHistory="true"/>
+        <activity android:name=".Congratulations"
+            android:noHistory="true"/>
+        <activity android:name=".Verification"
+            android:noHistory="true"/>
+        <activity android:name=".Registration"
+            android:noHistory="true"/>
+        <activity android:name=".SelectLanguage"
+            android:noHistory="true"/>
         <activity android:name=".Slides" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

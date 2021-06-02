@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,21 +9,22 @@
     tools:context=".Registration">
 
     <ImageView
+        android:id="@+id/backArrow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/back_button"
         android:src="@drawable/ic_baseline_arrow_back_ios_24"
         android:onClick="goToLanguage"/>
 
-
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="180dp"
         android:layout_height="80dp"
-        android:layout_gravity="center"
+        android:layout_centerHorizontal="true"
         android:layout_margin="2dp"
         android:contentDescription="@string/app_name"
-        app:srcCompat="@drawable/logo_title" />
+        app:srcCompat="@drawable/logo_title"
+        android:layout_below="@id/backArrow"/>
 
     <TextView
         android:id="@+id/name"
@@ -34,7 +35,8 @@
         android:fontFamily="@font/nunito_bold"
         android:text="@string/full_name"
         android:textColor="@color/black"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:layout_below="@id/imageView" />
 
     <EditText
         android:id="@+id/nameEdit"
@@ -48,7 +50,8 @@
         android:hint="@string/john_doe"
         android:importantForAutofill="no"
         android:inputType="textPersonName"
-        android:padding="12dp" />
+        android:padding="12dp"
+        android:layout_below="@id/name"/>
 
     <TextView
         android:id="@+id/contact"
@@ -59,16 +62,18 @@
         android:fontFamily="@font/nunito_bold"
         android:text="@string/contact_no"
         android:textColor="@color/black"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:layout_below="@id/nameEdit"/>
 
     <LinearLayout
+        android:id="@+id/phone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_below="@id/contact">
 
         <TextView
-            android:id="@+id/ccp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="12dp"
@@ -100,7 +105,8 @@
         android:fontFamily="@font/nunito_bold"
         android:text="@string/e_mail"
         android:textColor="@color/black"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:layout_below="@id/phone"/>
 
     <EditText
         android:id="@+id/emailEdit"
@@ -113,7 +119,8 @@
         android:fontFamily="@font/nunito_light"
         android:hint="@string/johndoe_mail_com"
         android:inputType="textEmailAddress"
-        android:padding="12dp" />
+        android:padding="12dp"
+        android:layout_below="@id/email"/>
 
 
     <View
@@ -121,6 +128,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginVertical="10dp"
+        android:layout_below="@id/emailEdit"
         android:background="?android:attr/listDivider" />
 
 
@@ -130,15 +138,18 @@
         android:layout_height="wrap_content"
         android:layout_marginVertical="10dp"
         android:layout_marginStart="10dp"
+        android:layout_below="@id/divider2"
         android:fontFamily="@font/nunito_bold"
         android:text="@string/adhaar_card"
         android:textColor="@color/black"
         android:textSize="18sp" />
 
     <LinearLayout
+        android:id="@+id/upload"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
+        android:layout_below="@id/card"
         android:background="@drawable/dashed_box"
         android:orientation="horizontal">
 
@@ -179,8 +190,9 @@
         android:layout_marginTop="20dp"
         android:background="@drawable/button_color"
         android:text="@string/submit"
+        android:layout_alignParentBottom="true"
         android:textColor="@color/white"
         android:textStyle="bold" />
 
 
-</LinearLayout>
+</RelativeLayout>

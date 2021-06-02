@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
+import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.example.screens.databinding.ActivitySlidesBinding
 import me.relex.circleindicator.CircleIndicator3
 
@@ -31,22 +32,53 @@ class Slides : AppCompatActivity() {
         indicator.setViewPager(binding.viewPager2)
 
 
-               binding.nextButton.setOnClickListener {
-                   binding.viewPager2.apply {
-                       flag++
-                       beginFakeDrag()
-                       fakeDragBy(-10f)
-                       endFakeDrag()
-                   }
-                   if(flag == 3){
-                       binding.nextButton.setText(R.string.start)
-                       binding.nextButton.setOnClickListener {
-                           val intent = Intent(this@Slides, Registration::class.java)
-                           startActivity(intent)
-                           finish()
-                       }
-                   }
-               }
+
+        binding.viewPager2.registerOnPageChangeCallback(object : OnPageChangeCallback() {
+                override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                if(position == 2) {
+                    binding.nextButton.setText(R.string.start)
+                    binding.nextButton.setOnClickListener {
+                        val intent = Intent(this@Slides, Registration::class.java)
+                        startActivity(intent)
+                        finish()
+
+                    }
+                }
+                    else{
+                        binding.nextButton.setText(R.string.next)
+                        binding.nextButton.setOnClickListener {
+                        binding.viewPager2.apply {
+                            flag++
+                            beginFakeDrag()
+                            fakeDragBy(-10f)
+                            endFakeDrag()
+                        }
+
+                    }
+                }
+            }
+
+        })
+
+
+//               binding.nextButton.setOnClickListener {
+//                   binding.viewPager2.apply {
+//                       flag++
+//                       beginFakeDrag()
+//                       fakeDragBy(-10f)
+//                       endFakeDrag()
+//
+//                   if(flag == 3) {
+//                       binding.nextButton.setText(R.string.start)
+//                       binding.nextButton.setOnClickListener {
+//                           val intent = Intent(this@Slides, Registration::class.java)
+//                           startActivity(intent)
+//                           finish()
+//                       }
+//                   }
+//                   }
+//               }
 
             }
 

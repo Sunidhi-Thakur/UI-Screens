@@ -3,11 +3,13 @@ package com.example.screens
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.screens.adapters.LanguageAdapter
 import com.example.screens.databinding.ActivitySelectLanguageBinding
 import com.example.screens.models.LanguageList
 import java.util.*
+
 
 class SelectLanguage : AppCompatActivity() {
     lateinit var binding: ActivitySelectLanguageBinding
@@ -22,6 +24,7 @@ class SelectLanguage : AppCompatActivity() {
         val layoutManager = LinearLayoutManager(applicationContext)
         binding.languageRV.layoutManager = layoutManager
         binding.languageRV.adapter = languageAdapter
+        binding.languageRV.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
 
         prepareData()
 
@@ -40,7 +43,7 @@ class SelectLanguage : AppCompatActivity() {
     private fun prepareData() {
         var language = LanguageList("English", "")
         languageList.add(language)
-        language = LanguageList("हिंदी","Hindi")
+        language = LanguageList("हिंदी", "Hindi")
         languageList.add(language)
         language = LanguageList("ગુજરાતી", "Gujarati")
         languageList.add(language)

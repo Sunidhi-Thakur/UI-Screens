@@ -4,7 +4,7 @@
     android:id="@+id/language"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_gravity="top"
+    android:paddingVertical="2.5dp"
     android:orientation="horizontal">
 
     <RadioButton
@@ -16,21 +16,24 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_gravity="center">
 
         <TextView
             android:id="@+id/localText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
-            android:fontFamily="@font/nunito_bold" />
+            android:textSize="18sp"
+            android:fontFamily="@font/nunito_light" />
 
         <TextView
             android:id="@+id/englishText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
-            android:fontFamily="@font/nunito_bold" />
+            android:textSize="18sp"
+            android:fontFamily="@font/nunito_light" />
 
     </LinearLayout>
 

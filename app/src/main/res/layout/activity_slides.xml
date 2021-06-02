@@ -16,7 +16,7 @@
         android:textColor="@color/white"
         android:fontFamily="@font/nunito_bold"
         android:layout_margin="12dp"
-        android:textSize="24sp"/>
+        android:textSize="24sp" />
 
 
     <me.relex.circleindicator.CircleIndicator3
@@ -33,6 +33,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerInParent="true"
-        android:layout_above="@id/indicator"/>
+        android:layout_above="@id/indicator"
+        />
 
 </RelativeLayout>
