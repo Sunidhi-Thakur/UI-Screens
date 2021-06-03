@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         Handler().postDelayed(Runnable {
             if(languageCheck && !registrationCheck){
-                val intent = Intent(applicationContext, Registration::class.java)
+                val intent = Intent(applicationContext, Login::class.java)
                 startActivity(intent)
                 finish()
             }

@@ -39,7 +39,7 @@ class Slides : AppCompatActivity() {
                 if(position == 2) {
                     binding.nextButton.setText(R.string.start)
                     binding.nextButton.setOnClickListener {
-                        val intent = Intent(this@Slides, Registration::class.java)
+                        val intent = Intent(this@Slides, Login::class.java)
                         startActivity(intent)
                         finish()
 

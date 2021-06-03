@@ -6,12 +6,14 @@ import android.view.ViewGroup
 import android.widget.RadioButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.screens.LocaleListener
 import com.example.screens.R
 import com.example.screens.models.LanguageList
 
 class LanguageAdapter(private var languageList: List<LanguageList>):
     RecyclerView.Adapter<LanguageAdapter.MyViewHolder>() {
     private var mSelectedItem = -1
+    private lateinit var mListener: LocaleListener
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val itemView = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_language, parent, false)
@@ -25,13 +27,32 @@ class LanguageAdapter(private var languageList: List<LanguageList>):
         holder.bindItems(position, mSelectedItem)
         holder.radioButton.setOnClickListener {
             mSelectedItem = holder.adapterPosition
+            changeLanguage(mSelectedItem)
             notifyDataSetChanged()
         }
+    }
+
+    private fun changeLanguage(position: Int) {
+        when (position) {
+            1 -> mListener.setLocale("hi")
+            2 -> mListener.setLocale("gu")
+            3 -> mListener.setLocale("mr")
+            4 -> mListener.setLocale("bn")
+            5 -> mListener.setLocale("kn")
+            6 -> mListener.setLocale("ta")
+            7 -> mListener.setLocale("te")
+            else -> mListener.setLocale("en")
+        }
+
     }
 
 
     override fun getItemCount(): Int {
         return languageList.size
+    }
+
+    fun setLocaleListener(listener: LocaleListener) {
+        mListener = listener
     }
 
     class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -44,8 +65,6 @@ class LanguageAdapter(private var languageList: List<LanguageList>):
                 radioButton.isChecked = true
             else
                 radioButton.isChecked = selectedPosition == position
-
-            }
-
+        }
     }
 }

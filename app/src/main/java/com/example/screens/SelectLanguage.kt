@@ -1,7 +1,10 @@
 package com.example.screens
 
 import android.content.Intent
+import android.content.res.Configuration
+import android.content.res.Resources
 import android.os.Bundle
+import android.util.DisplayMetrics
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -11,7 +14,8 @@ import com.example.screens.models.LanguageList
 import java.util.*
 
 
-class SelectLanguage : AppCompatActivity() {
+class SelectLanguage : AppCompatActivity(), LocaleListener {
+
     lateinit var binding: ActivitySelectLanguageBinding
     private val languageList = ArrayList<LanguageList>()
     private lateinit var languageAdapter: LanguageAdapter
@@ -24,9 +28,16 @@ class SelectLanguage : AppCompatActivity() {
         val layoutManager = LinearLayoutManager(applicationContext)
         binding.languageRV.layoutManager = layoutManager
         binding.languageRV.adapter = languageAdapter
-        binding.languageRV.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
+
+        binding.languageRV.addItemDecoration(
+            DividerItemDecoration(
+                this,
+                DividerItemDecoration.VERTICAL
+            )
+        )
 
         prepareData()
+        languageAdapter.setLocaleListener(this)
 
         binding.nextButton.setOnClickListener {
             val sharedPreferences = getSharedPreferences("SP_INFO", MODE_PRIVATE)
@@ -59,5 +70,17 @@ class SelectLanguage : AppCompatActivity() {
         languageList.add(language)
 
         languageAdapter.notifyDataSetChanged()
+    }
+
+    override fun setLocale(lang: String) {
+        val myLocale = Locale(lang)
+        val res: Resources = applicationContext.resources
+        val dm: DisplayMetrics = res.displayMetrics
+        val conf: Configuration = res.configuration
+        conf.locale = myLocale
+        res.updateConfiguration(conf, dm)
+        val refresh = Intent(this, Slides::class.java)
+        startActivity(refresh)
+        finish()
     }
 }
