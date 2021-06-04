@@ -5,8 +5,18 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
+import android.view.KeyEvent
+import android.view.View
+import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.androidnetworking.AndroidNetworking
+import com.androidnetworking.error.ANError
+import com.androidnetworking.interfaces.ParsedRequestListener
 import com.example.screens.databinding.ActivityVerificationBinding
+import com.example.screens.models.LoginResponse
+import com.example.screens.models.OtpResponse
 
 
 class Verification : AppCompatActivity() {
@@ -15,97 +25,143 @@ class Verification : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityVerificationBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.box1.addTextChangedListener(object : TextWatcher {
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                if (binding.box1.text.toString().length == 1) {
-                    binding.box1.clearFocus()
-                    binding.box2.requestFocus()
-                    binding.box2.isCursorVisible = true
-                }
-            }
 
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+        binding.box1.addTextChangedListener(GenericTextWatcher(binding.box1, binding.box2))
+        binding.box2.addTextChangedListener(GenericTextWatcher(binding.box2, binding.box3))
+        binding.box3.addTextChangedListener(GenericTextWatcher(binding.box3, binding.box4))
+        binding.box4.addTextChangedListener(GenericTextWatcher(binding.box4, null))
 
-            }
+        binding.box1.setOnKeyListener(GenericKeyEvent(binding.box1, null))
+        binding.box2.setOnKeyListener(GenericKeyEvent(binding.box2, binding.box1))
+        binding.box3.setOnKeyListener(GenericKeyEvent(binding.box3, binding.box2))
+        binding.box4.setOnKeyListener(GenericKeyEvent(binding.box4, binding.box3))
 
-            override fun afterTextChanged(s: Editable) {
-                if (binding.box1.text.toString().isEmpty()) {
-                    binding.box1.requestFocus()
-                }
-            }
-        })
-
-
-        binding.box2.addTextChangedListener(object : TextWatcher {
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                if (binding.box2.text.toString().length == 1) {
-                    binding.box2.clearFocus()
-                    binding.box3.requestFocus()
-                    binding.box3.isCursorVisible = true
-
-                }
-            }
-
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-            }
-
-            override fun afterTextChanged(s: Editable) {
-                if (binding.box2.text.toString().isEmpty()) {
-                    binding.box2.requestFocus()
-                }
-
-            }
-        })
-
-        binding.box3.addTextChangedListener(object : TextWatcher {
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                if (binding.box3.text.toString().length == 1) {
-                    binding.box3.clearFocus()
-                    binding.box4.requestFocus()
-                    binding.box4.isCursorVisible = true
-                }
-            }
-
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-            }
-
-            override fun afterTextChanged(s: Editable) {
-                if (binding.box3.text.toString().isEmpty()) {
-                    binding.box3.requestFocus()
-                }
-
-            }
-        })
-
-
-        binding.box4.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                if (binding.box4.text.toString().length == 1) {
-                    binding.box4.requestFocus()
-                    binding.box4.isCursorVisible = true
-
-                }
-            }
-
-            override fun afterTextChanged(s: Editable?) {
-            }
-        })
         object : CountDownTimer(600000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
-                binding.txtClok.text = ((String.format("%02d",millisUntilFinished/ 60000))+":"+String.format("%02d",millisUntilFinished % 60000 / 1000))
+                binding.txtClok.text = ((String.format(
+                    "%02d",
+                    millisUntilFinished / 60000
+                )) + ":" + String.format("%02d", millisUntilFinished % 60000 / 1000))
             }
 
             override fun onFinish() {
             }
         }.start()
 
-        binding.submitButton.setOnClickListener {
-            val intent = Intent(this@Verification, Congratulations::class.java)
+        binding.backArrow.setOnClickListener {
+            val intent = Intent(this@Verification, Login::class.java)
             startActivity(intent)
         }
+
+
+        AndroidNetworking.initialize(this)
+        AndroidNetworking.post("https://innowrap.co.in/clients/acuvisor/App/User/VerifyOtp")
+            .addHeaders("Authorization", "Basic TzdOZVBeQjNnTjkhYT9FOik2KF40K1hJY0JYTWhpTkY0OT05")
+            .addHeaders("Token", "gCERLnNSEx9HGbOy1AmMKg==")
+            .addHeaders("Content-Type","application/x-www-form-urlencoded")
+            .addUrlEncodeFormBodyParameter("otp","1111").build().getAsObject(OtpResponse::class.java, object : ParsedRequestListener<OtpResponse> {
+                    override fun onResponse(response: OtpResponse) {
+                        Log.d("SUNIDHI", response.msg)
+                        if (response.msg == "Verify Done") {
+                            binding.submitButton.setOnClickListener {
+                                if (binding.box1.text.length == 1 && binding.box2.text.length == 1 && binding.box3.text.length == 1 && binding.box4.text.length == 1) {
+                                    val intent = Intent(
+                                        this@Verification,
+                                        Congratulations::class.java
+                                    )
+                                    startActivity(intent)
+                                } else {
+                                    Toast.makeText(
+                                        this@Verification,
+                                        "Enter OTP",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                            }
+
+                        } else {
+                            binding.submitButton.setOnClickListener {
+                                Toast.makeText(this@Verification, response.msg, Toast.LENGTH_SHORT)
+                                    .show()
+                            }
+                        }
+                    }
+
+                    override fun onError(anError: ANError?) {
+                        Toast.makeText(this@Verification, R.string.error, Toast.LENGTH_SHORT).show()
+                    }
+                })
+
+        binding.resend.setOnClickListener {
+            Toast.makeText(this, "Sending OTP ...", Toast.LENGTH_SHORT).show()
+            AndroidNetworking.post("https://innowrap.co.in/clients/acuvisor/App/User/ResendOtp")
+                .addBodyParameter("mobile", "ZROq0iLVFUdqR6Lw0jXzOA==").addHeaders("Authorization","Basic TzdOZVBeQjNnTjkhYT9FOik2KF40K1hJY0JYTWhpTkY0OT05").build().getAsObject(
+                    LoginResponse::class.java,
+                    object : ParsedRequestListener<LoginResponse> {
+                        override fun onResponse(response: LoginResponse) {
+                            Toast.makeText(this@Verification, response.msg, Toast.LENGTH_SHORT).show()
+                            Log.d("SUNIDHI", response.Token)
+                        }
+                        override fun onError(anError: ANError?) {
+                            Toast.makeText(this@Verification, R.string.error, Toast.LENGTH_SHORT).show()
+                        }
+                    })
+                    }
+        }
+
+
+
+
     }
-}
+
+    class GenericKeyEvent internal constructor(
+        private val currentView: EditText,
+        private val previousView: EditText?
+    ) : View.OnKeyListener {
+        override fun onKey(p0: View?, keyCode: Int, event: KeyEvent?): Boolean {
+            if (event!!.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_DEL && currentView.id != R.id.box1 && currentView.text.isEmpty()) {
+                previousView!!.text = null
+                previousView.requestFocus()
+                return true
+            }
+            return false
+        }
+
+
+    }
+
+    class GenericTextWatcher internal constructor(
+        private val currentView: View,
+        private val nextView: View?
+    ) : TextWatcher {
+        override fun afterTextChanged(editable: Editable) {
+            val text = editable.toString()
+            when (currentView.id) {
+                R.id.box1 -> if (text.length == 1) nextView!!.requestFocus()
+                R.id.box2 -> if (text.length == 1) nextView!!.requestFocus()
+                R.id.box3 -> if (text.length == 1) nextView!!.requestFocus()
+                R.id.box4 -> if (text.length == 1) nextView?.requestFocus()
+
+            }
+        }
+
+        override fun beforeTextChanged(
+            arg0: CharSequence,
+            arg1: Int,
+            arg2: Int,
+            arg3: Int
+        ) {
+        }
+
+        override fun onTextChanged(
+            arg0: CharSequence,
+            arg1: Int,
+            arg2: Int,
+            arg3: Int
+        ) {
+        }
+
+    }
+
+
 

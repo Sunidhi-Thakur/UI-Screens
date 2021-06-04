@@ -79,8 +79,5 @@ class SelectLanguage : AppCompatActivity(), LocaleListener {
         val conf: Configuration = res.configuration
         conf.locale = myLocale
         res.updateConfiguration(conf, dm)
-        val refresh = Intent(this, Slides::class.java)
-        startActivity(refresh)
-        finish()
     }
 }

@@ -18,6 +18,7 @@
             android:padding="12dp">
 
             <ImageView
+                android:id="@+id/backArrow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -47,12 +48,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="24dp"
-        android:fontFamily="@font/nunito_bold"
+        android:fontFamily="@font/montserrat"
         android:paddingHorizontal="80dp"
         android:text="@string/verification_code"
+        android:paddingTop="10dp"
         android:textAlignment="center"
         android:textColor="@color/black"
-        android:textSize="24sp" />
+        android:textSize="30sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -66,7 +68,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/nunito_light"
+            android:fontFamily="@font/montserrat"
             android:padding="15dp"
             android:text="@string/enter_your_4_digit_code"
             android:textAlignment="center"
@@ -150,6 +152,8 @@
             android:background="@drawable/button_color"
             android:paddingHorizontal="60dp"
             android:text="@string/submit"
+            android:textSize="18sp"
+            android:textAllCaps="false"
             android:textColor="@color/white"
             android:textStyle="bold" />
 
@@ -210,6 +214,7 @@
                 android:textColor="@color/black" />
 
             <TextView
+                android:id="@+id/resend"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/nunito_bold"
@@ -217,6 +222,8 @@
                 android:paddingVertical="10dp"
                 android:text="@string/resend"
                 android:textAlignment="center"
+                android:clickable="true"
+                android:focusable="true"
                 android:textColor="#2196F3"
                 android:textStyle="bold" />
         </LinearLayout>

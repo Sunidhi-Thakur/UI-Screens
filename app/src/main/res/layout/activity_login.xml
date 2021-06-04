@@ -10,6 +10,7 @@
         android:id="@+id/logo"
         android:layout_width="wrap_content"
         android:layout_centerHorizontal="true"
+        android:layout_marginHorizontal="20dp"
         android:layout_height="wrap_content"
         android:src="@drawable/bg"
         android:layout_above="@id/contact"/>
@@ -20,7 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
-        android:fontFamily="@font/nunito_bold"
+        android:fontFamily="@font/montserrat_bold"
         android:text="@string/mobile_number"
         android:textColor="@color/black"
         android:textSize="18sp"
@@ -31,13 +32,13 @@
             android:id="@+id/contEdit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
+            android:layout_marginHorizontal="25dp"
             android:background="@drawable/solid_box"
             android:ems="10"
             android:layout_centerInParent="true"
             android:fontFamily="@font/nunito_light"
             android:hint="@string/num"
-            android:inputType="phone"
+            android:inputType="number"
             android:padding="12dp" />
 
     <androidx.appcompat.widget.AppCompatButton
@@ -47,7 +48,8 @@
         android:text="@string/login"
         android:layout_below="@id/contEdit"
         android:layout_marginTop="30dp"
-        android:layout_marginHorizontal="15dp"
+        android:textAllCaps="false"
+        android:layout_marginHorizontal="25dp"
         android:background="@drawable/button_color2"
         android:textColor="@color/white"
         android:textSize="18sp"/>

@@ -19,15 +19,15 @@
 
     <TextView
         android:id="@+id/slide1_heading"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@id/slide1_desc"
-        android:fontFamily="@font/nunito_bold"
+        android:fontFamily="@font/montserrat"
         android:gravity="center"
-        android:paddingHorizontal="42dp"
         android:text="@string/slide1_heading"
         android:textColor="@color/black"
-        android:textSize="24sp" />
+        android:layout_marginHorizontal="25dp"
+        android:textSize="26sp" />
 
     <TextView
         android:id="@+id/slide1_desc"

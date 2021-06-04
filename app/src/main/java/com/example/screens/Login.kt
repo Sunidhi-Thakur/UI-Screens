@@ -5,11 +5,12 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.androidnetworking.AndroidNetworking
+import com.androidnetworking.error.ANError
+import com.androidnetworking.interfaces.ParsedRequestListener
 import com.example.screens.databinding.ActivityLoginBinding
 import com.example.screens.models.LoginResponse
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+
 
 class Login : AppCompatActivity() {
     lateinit var binding: ActivityLoginBinding
@@ -19,28 +20,27 @@ class Login : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.loginBtn.setOnClickListener {
-            getOTP()
-            val intent = Intent(this@Login, Verification::class.java)
-            startActivity(intent)
-            finish()
+            if (binding.contEdit.text.length != 10 ){
+                Toast.makeText(this@Login, "Enter a valid number", Toast.LENGTH_SHORT).show()
+            }else {
+                AndroidNetworking.initialize(this)
+                AndroidNetworking.post("https://innowrap.co.in/clients/acuvisor/App/User/ResendOtp")
+                    .addBodyParameter("mobile", "ZROq0iLVFUdqR6Lw0jXzOA==").addHeaders("Authorization","Basic TzdOZVBeQjNnTjkhYT9FOik2KF40K1hJY0JYTWhpTkY0OT05").build().getAsObject(
+                        LoginResponse::class.java,
+                        object : ParsedRequestListener<LoginResponse> {
+                            override fun onResponse(response: LoginResponse) {
+                                Toast.makeText(this@Login, response.msg, Toast.LENGTH_SHORT).show()
+                                Log.d("SUNIDHI", response.Token)
+                            }
+                            override fun onError(anError: ANError?) {
+                                Toast.makeText(this@Login, R.string.error, Toast.LENGTH_SHORT).show()
+                            }
+                        })
+                val intent = Intent(this@Login, Verification::class.java)
+                startActivity(intent)
+                finish()
+            }
         }
+
     }
-
-    private fun getOTP() {
-        val otp: Call<LoginResponse> = LoginAPI.loginInstance.getOTP(binding.contEdit.toString())
-        otp.enqueue(object : Callback<LoginResponse>{
-            override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
-                val otp: LoginResponse? = response.body()
-                if (otp != null){
-                    Toast.makeText(this@Login, otp.msg, Toast.LENGTH_SHORT).show()
-                    Log.d("SUNIDHI", response.body().toString())
-                }
-            }
-            override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                Log.d("SUNIDHI", "Error")
-            }
-
-        })
-    }
-
 }
